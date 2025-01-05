@@ -13,4 +13,5 @@
  /SUNdebugg 登録した座標を通るとその座標をチャットに表示します。
  
  /SUNhelpをチャットに入力することで使用方法の確認ができます。
- 
+
+ (![image](https://github.com/user-attachments/assets/c7cc0634-c795-4344-91e5-021a9b310844))
