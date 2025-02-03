@@ -1,6 +1,12 @@
-ゲーム内で/CT FILES→出てきたmodulesフォルダにSUNをぶち込めば動くと思います。
+1. Chattriggersをインストール
+2. ゲーム内で"/ct files"を実行
+3. "SUN"のZipファイルをダウンロード
+4. "SUN"のZipファイルをconfig\Chattriggers\modules←ここに解凍
+5. ゲーム内で"/ct load"を実行
 
 このmoduleには"PogData", "BloomCore", "BeaconBeam"が必要になります。
+
+何かバグ等あればdiscordでarrow_qdまでお願いします。
 
  /loc 現在位置を登録します。
  
@@ -14,4 +20,4 @@
  
  /SUNhelpをチャットに入力することで使用方法の確認ができます。
 
- (![image](https://github.com/user-attachments/assets/c7cc0634-c795-4344-91e5-021a9b310844))
+ 
