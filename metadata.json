@@ -1,0 +1,12 @@
+{
+    "name": "SUN",
+    "creator": "Arrow",
+    "description": "farming helper!",
+    "version": "1.0.0",
+    "entry": "index.js",
+    "requires": [
+        "PogData",
+        "BloomCore",
+        "Vigilance"
+    ]
+}
