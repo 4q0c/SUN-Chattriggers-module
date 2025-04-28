@@ -6,5 +6,5 @@
 		pest_repellent_max_timer = true
 		"pitch?" = 2
 		pitch = 20
-		"xyz+count_send_chat" = false
+		"xyz+count_send_chat" = true
 
