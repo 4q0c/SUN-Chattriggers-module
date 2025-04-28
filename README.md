@@ -38,7 +38,7 @@
 
 ### コマンド一覧
 
-- `/sun gui vigilance`  
+- `/sun gui`  
   - **vigilance**で構成されたGUIを開きます。
   
 - `/sun add <適当な数字>`  
