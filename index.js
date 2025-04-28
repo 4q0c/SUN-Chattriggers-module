@@ -250,6 +250,9 @@ register("command", (arg1, arg2, arg3, arg4) => {
                 data.save()
                 const mes = `${testprefix} 現在の座標を保存しました: X=${playerX}, Y=${playerY}, Z=${playerZ} (Count: ${maxc})`
                 new TextComponent(mes).setClick("run_command", `/SUN delete ${playerX} ${playerY} ${playerZ}`).setHover("show_text", `&bクリックして座標を削除！`).chat()
+        } else if (!arg2) {
+            const mes = `${testprefix} 引数が不足しています! 使い方に関しましては/sun helpをお読みください！`
+            new TextComponent(mes).setClick("run_command", `/sun help`).setHover("show_text", `&bクリックして/sun helpを実行。`).chat()
         }
     } else if (arg1 === "delete") {
         if (!arg2 || !arg3 || !arg4) {
@@ -291,6 +294,8 @@ register("command", (arg1, arg2, arg3, arg4) => {
     } else if (arg1 === "gui") {
         ChatLib.command(`sungui`, true)
     } else if (arg1 === "help") {
+        help()
+    } else {
         help()
     }
 }).setName("SUN")
