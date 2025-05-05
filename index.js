@@ -44,10 +44,10 @@ export function getrep() {
     const names = TabList.getNames();
     // ChatLib.chat(`TabList names: ${names}`);
 
-    const line = names.find(it => /^(Repellent: (MAX|None))\s?\(([\w ]+)\)$/.test(it.removeFormatting().trim()));
+    const line = names.find(it => /^(Repellent:)\s?([\w ]+)$/.test(it.removeFormatting().trim()));
 
     if (line) {
-        const match = line.removeFormatting().trim().match(/^(Repellent: (MAX|None))\s?\(([\w ]+)\)$/);
+        const match = line.removeFormatting().trim().match(/^(Repellent:)\s?([\w ]+)$/);
         
         if (match) {
             // ChatLib.chat(`${testprefix} Repellent: ${match[3]}`);
@@ -58,6 +58,28 @@ export function getrep() {
     }
     
     // ChatLib.chat(`${testprefix} Repellent:見つからない: ${line}`)
+}
+
+
+
+function getpestplot() {
+    const names = TabList.getNames();
+    // ChatLib.chat(`TabList names: ${names}`);
+// Plots: 16
+const line = names.find(it => /^Plots:\s*\d+(,\s*\d+)*$/.test(it.removeFormatting().trim()));
+
+    if (line) {
+        const match = line.removeFormatting().trim().match(/^Plots:\s*(\d+)/);
+
+        ChatLib.chat(`${match}`)
+        
+        if (match) {
+            ChatLib.chat(`${testprefix} Repellent: ${match[1]}`);
+            return match[1];
+        }
+    } else {
+        return false
+    }
 }
 
 
@@ -299,3 +321,15 @@ register("command", (arg1, arg2, arg3, arg4) => {
         help()
     }
 }).setName("SUN")
+
+register("command", () => {
+    getpestplot()
+}).setName("getplot")
+
+const myKey = new KeyBind("TEST ", Keyboard.KEY_R, "SUN")
+
+register("tick", () => {
+    if (myKey.isPressed()) {
+        ChatLib.chat("Rキーが押されました")
+    }
+})
