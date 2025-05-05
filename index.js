@@ -44,10 +44,10 @@ export function getrep() {
     const names = TabList.getNames();
     // ChatLib.chat(`TabList names: ${names}`);
 
-    const line = names.find(it => /^(Repellent:)\s?([\w ]+)$/.test(it.removeFormatting().trim()));
+    const line = names.find(it => /^(Repellent: (MAX|None))\s?\(([\w ]+)\)$/.test(it.removeFormatting().trim()));
 
     if (line) {
-        const match = line.removeFormatting().trim().match(/^(Repellent:)\s?([\w ]+)$/);
+        const match = line.removeFormatting().trim().match(/^(Repellent: (MAX|None))\s?\(([\w ]+)\)$/);
         
         if (match) {
             // ChatLib.chat(`${testprefix} Repellent: ${match[3]}`);
@@ -59,8 +59,6 @@ export function getrep() {
     
     // ChatLib.chat(`${testprefix} Repellent:見つからない: ${line}`)
 }
-
-
 
 function getpestplot() {
     const names = TabList.getNames();
@@ -326,10 +324,21 @@ register("command", () => {
     getpestplot()
 }).setName("getplot")
 
-const myKey = new KeyBind("TEST ", Keyboard.KEY_R, "SUN")
+/*
+const myKey = new KeyBind("TEST ", Keyboard.KEY_H, "SUN")
 
 register("tick", () => {
     if (myKey.isPressed()) {
         ChatLib.chat("Rキーが押されました")
     }
 })
+*/
+
+register("guiOpened", () => {
+    Client.scheduleTask(() => {
+        const inv = Player.getOpenedInventory();
+        if (inv) new TextComponent(`${inv.getName()}`).chat(
+
+        )
+    });
+});
