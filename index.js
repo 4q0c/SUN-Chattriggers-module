@@ -71,10 +71,10 @@ const line = names.find(it => /^Plots:\s*\d+(,\s*\d+)*$/.test(it.removeFormattin
     if (line) {
         const match = line.removeFormatting().trim().match(/^Plots:\s*(\d+)/);
 
-        ChatLib.chat(`${match}`)
+        // ChatLib.chat(`${match}`)
         
         if (match) {
-            ChatLib.chat(`${testprefix} Repellent: ${match[1]}`);
+            // ChatLib.chat(`${testprefix} Repellent: ${match[1]}`);
             return match[1];
         }
     } else {
@@ -367,7 +367,7 @@ register("guiOpened", () => {
             if (matchLine) {
                 ChatLib.chat(`見つかったロア: &a${matchLine} i ${i}`);
                 const cleanLine = matchLine.removeFormatting();
-                    if (!plotdata.farm.find(obj => obj.match === cleanLine)) {
+                    if (!plotdata.farm.find(obj => obj.match === removeyourplotprefix(cleanLine))) {
                         // match: plotの名前, cleanLine: i, p: plotの番号
                         plotdata.farm.push({ match: removeyourplotprefix(cleanLine), i: i, p: plotMap[i]});
                         plotdata.save();
@@ -378,6 +378,18 @@ register("guiOpened", () => {
         }
     });
 });
+
+register("command", () => {    
+    plotdata.farm.forEach(farm => {
+        if (farm.p == getpestplot()) {
+            ChatLib.chat(`Pest is in: ${farm.match} farm.p:${farm.p}`); // 例: "Plot - 17"
+            ChatLib.command(`tptoplot ${farm.match}`)
+        }
+
+    })
+}).setName("pestwhere");
+
+
 
 
 // GUI が閉じられたらオフにする
