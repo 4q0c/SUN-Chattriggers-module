@@ -1,4 +1,4 @@
-import { data, subdata } from "./util/data";
+import { data, subdata, plotdata } from "./util/data";
 import { renderBoxOutline, renderFilledBox } from "../BloomCore/RenderUtils"
 import config from "./config"
 import {registerWhen} from "../BloomCore/utils/Utils"
@@ -7,6 +7,8 @@ import "./features/SprayTimer/index"
 import "./features/PetAlert/index"
 import "./commands/help"
 import { help } from "./commands/help/index";
+import { highlightSlot } from "../BloomCore/utils/Utils";
+import { plotMap } from "./data/plotmap";
 
 export const testprefix = "§6[§aSUN§6]"
 const sound2 = 'random.orb' // 音の設定
@@ -334,11 +336,56 @@ register("tick", () => {
 })
 */
 
-register("guiOpened", () => {
-    Client.scheduleTask(() => {
-        const inv = Player.getOpenedInventory();
-        if (inv) new TextComponent(`${inv.getName()}`).chat(
+let opend = false;
+const p = {
+    slot: []
+};
 
-        )
+// GUI が開かれたときにスロット検出
+register("guiOpened", () => {
+    Client.scheduleTask(3, () => {
+        const inv = Player.getOpenedInventory();
+        if (!inv || inv.getName() !== "Configure Plots") return;
+
+        const items = inv.getItems();
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            if (!item) continue;
+
+            const id = item.getRegistryName();
+            const lore = item.getLore();
+            p.slot.push({ subgui: i, r: 1, g: 0, b: 0 });
+
+            // ChatLib.chat(`Slot ${i} に ${id} を検出`);
+            
+            const matchLine = lore.find(line => line.includes("Plot"));
+            if (matchLine) {
+                ChatLib.chat(`見つかったロア: &a${matchLine} i ${i}`);
+                const cleanLine = matchLine.removeFormatting();
+                    if (!plotdata.farm.find(obj => obj.match === cleanLine)) {
+                        // match: plotの名前, cleanLine: i, p: plotの番号
+                        plotdata.farm.push({ match: cleanLine, i: i, p: plotMap[i]});
+                        plotdata.save();
+                    }
+            } else {
+                // ChatLib.chat("&7> ロアなし");
+            }
+        }
     });
+});
+
+
+// GUI が閉じられたらオフにする
+register("guiClosed", () => {
+    opend = false;
+});
+
+// ハイライト描画
+register("guiRender", (mx, my, gui) => {
+    if (!opend) return;
+    if (p.slot && Array.isArray(p.slot)) {
+        p.slot.forEach(slot => {
+            highlightSlot(gui, slot.subgui, slot.r, slot.g, slot.b, 0.5, false);
+        });
+    }
 });
