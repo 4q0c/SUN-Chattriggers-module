@@ -15,3 +15,7 @@ export const data = new PogObject("SUN/data", {
 export const subdata = new PogObject("SUN/data", {
     time:[]
 }, "time.json")
+
+export const plotdata = new PogObject("SUN/data", {
+    farm: []
+}, "plot.json")
