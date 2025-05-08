@@ -336,6 +336,11 @@ register("tick", () => {
 })
 */
 
+function removeyourplotprefix(line) {
+    return line.removeFormatting().replace(/^Plot -\s*/, "");
+}
+
+
 let opend = false;
 const p = {
     slot: []
@@ -364,7 +369,7 @@ register("guiOpened", () => {
                 const cleanLine = matchLine.removeFormatting();
                     if (!plotdata.farm.find(obj => obj.match === cleanLine)) {
                         // match: plotの名前, cleanLine: i, p: plotの番号
-                        plotdata.farm.push({ match: cleanLine, i: i, p: plotMap[i]});
+                        plotdata.farm.push({ match: removeyourplotprefix(cleanLine), i: i, p: plotMap[i]});
                         plotdata.save();
                     }
             } else {
