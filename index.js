@@ -317,6 +317,12 @@ register("command", (arg1, arg2, arg3, arg4) => {
         ChatLib.command(`sungui`, true)
     } else if (arg1 === "help") {
         help()
+    } else if (arg1 === "data") {
+        if (arg2 === "delete") {
+            plotdata.farm.length = 0
+            ChatLib.chat(`${testprefix} データをリセットしました。`)
+            plotdata.save()
+        }
     } else {
         help()
     }
@@ -365,7 +371,7 @@ register("guiOpened", () => {
             
             const matchLine = lore.find(line => line.includes("Plot"));
             if (matchLine) {
-                ChatLib.chat(`見つかったロア: &a${matchLine} i ${i}`);
+                // ChatLib.chat(`見つかったロア: &a${matchLine} i ${i}`);
                 const cleanLine = matchLine.removeFormatting();
                     if (!plotdata.farm.find(obj => obj.match === removeyourplotprefix(cleanLine))) {
                         // match: plotの名前, cleanLine: i, p: plotの番号
@@ -382,7 +388,7 @@ register("guiOpened", () => {
 register("command", () => {    
     plotdata.farm.forEach(farm => {
         if (farm.p == getpestplot()) {
-            ChatLib.chat(`Pest is in: ${farm.match} farm.p:${farm.p}`); // 例: "Plot - 17"
+            // ChatLib.chat(`Pest is in: ${farm.match} farm.p:${farm.p}`);
             ChatLib.command(`tptoplot ${farm.match}`)
         }
 
