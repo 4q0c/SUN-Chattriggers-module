@@ -21,4 +21,4 @@ registerWhen(register("tick", () => {
 
 registerWhen(register("renderOverlay", () => {
     Client.showTitle("", "&ePlz Pet Change!", 0, 2, 0)
-}), () => data.hedge && !config.petalert)
+}), () => data.hedge && config.petalert)
