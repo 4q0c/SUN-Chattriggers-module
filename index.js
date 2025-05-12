@@ -397,7 +397,7 @@ register("command", () => {
 
 
 
-
+/*
 // GUI が閉じられたらオフにする
 register("guiClosed", () => {
     opend = false;
@@ -412,3 +412,4 @@ register("guiRender", (mx, my, gui) => {
         });
     }
 });
+*/

@@ -74,7 +74,7 @@
         }
     ],
     "original": 0.14499999582767487,
-    "hedge": true,
+    "hedge": false,
     "sprayDisplay": {
         "x": 917.5,
         "y": 7.50836181640625,

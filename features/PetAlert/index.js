@@ -15,10 +15,10 @@ registerWhen(register("chat", (Pet, ...args) => {
 }).setCriteria("You summoned your ${*}!"), () => config.petalert && data.hedge)
 
 registerWhen(register("tick", () => {
-    if (config.petpitch <= 0) return
+    if (config.petpitch <= 0 || !config.petalert) return
     World.playSound(sound1, 2, config.petpitch)
 }), () => data.hedge)
 
 registerWhen(register("renderOverlay", () => {
     Client.showTitle("", "&ePlz Pet Change!", 0, 2, 0)
-}), () => data.hedge)
+}), () => data.hedge && !config.petalert)
