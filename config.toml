@@ -2,7 +2,7 @@
 [general]
 
 	[general.general]
-		pet_change_alert = false
+		pet_change_alert = true
 		pest_repellent_max_timer = true
 		"pitch?" = 2
 		pitch = 20
