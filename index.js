@@ -20,14 +20,6 @@ const sound3 = "note.pling"
 //debugg
 let debugg = true
 
-register("command", () => {
-    debugg = !debugg
-    if (debugg) {
-        ChatLib.chat(`${testprefix} &fデバッグモードが無効になりました。`)
-    } else {
-        ChatLib.chat(`${testprefix} &fデバッグモードが有効になりました。`)
-    }
-}).setName("SUNdebugg", true)
 
 let inatGarden = false
 
@@ -61,6 +53,24 @@ export function getrep() {
     
     // ChatLib.chat(`${testprefix} Repellent:見つからない: ${line}`)
 }
+
+function getpestplotsec() { 
+    const names = TabList.getNames();
+
+    const line = names.find(it => /^Plots:\s*\d+(,\s*\d+)*$/.test(it.removeFormatting().trim()));
+
+    if (line) {
+        const text = line.removeFormatting().trim();
+        const match = text.match(/^Plots:\s*(\d+(?:,\s*\d+)*)$/);
+
+        if (match) {
+            const plots = match[1].split(/\s*,\s*/).map(Number);
+            return plots ?? false; // 2番目が存在すれば返す、なければ false
+        }
+    }
+}
+
+
 
 function getpestplot() {
     const names = TabList.getNames();
@@ -213,31 +223,36 @@ register("command", () => {
 const LOCKED_SENSITIVITY = -1 / 3 // マウスロック時の感度※(0.333...)
 
 // マウスロック機能
+
+
 register("command", (arg) => {
     const minecraft = Client.getMinecraft()
     const settings = minecraft.field_71474_y
 
     if (arg === "true") {
         if (Math.abs(settings.field_74341_c - LOCKED_SENSITIVITY) < 0.00001) {
-            ChatLib.chat(`${testprefix} &cマウスロックは既に実行されています。`)
+            new TextComponent(`${testprefix} &cマウスロックは既に実行されています。`).setClick("run_command", `/$$$$$$`).setHover("show_text", `&bクリックしてコマンドを実行。`).chat()
         } else {
             data.original = settings.field_74341_c
             data.save()
             settings.field_74341_c = LOCKED_SENSITIVITY
-            ChatLib.chat(`${testprefix} &aマウスロックを実行しました。`)
+            new TextComponent(`${testprefix} &aマウスロックを実行しました。`).setClick("run_command", `/$$$$$$`).setHover("show_text", `&bクリックしてコマンドを実行。`).chat()
         }
     } else if (arg === "false") {
         if (data.original !== undefined && data.original !== null) {
             settings.field_74341_c = data.original
             data.original = null
             data.save()
-            ChatLib.chat(`${testprefix} &cマウスロックを解除しました。`)
+            new TextComponent(`${testprefix} &cマウスロックを解除しました。`).setClick("run_command", `/$$$$$$`).setHover("show_text", `&bクリックしてコマンドを実行。`).chat()
         } else {
-            ChatLib.chat(`${testprefix} &eマウスロックは有効化されていません。`)
+            new TextComponent(`${testprefix} &eマウスロックは有効化されていません。`).setClick("run_command", `/$$$$$$`).setHover("show_text", `&bクリックしてコマンドを実行。`).chat()
         }
     } else {
         ChatLib.chat(`${testprefix} &e引数は 'true' または 'false' で指定してください。`)
     }
+}).setTabCompletions((arg) => {
+    if (arg.length === 1) return ["true", "false"]
+    return []
 }).setName("mouselock", true)
 
 
@@ -326,6 +341,11 @@ register("command", (arg1, arg2, arg3, arg4) => {
     } else {
         help()
     }
+}).setTabCompletions((args) => {
+    const sub = args[0]
+    if (args.length === 1) return ["add", "delete", "list", "gui", "help", "data"]
+    if (args.length === 2 && sub === "data") return ["delete"]
+    return []
 }).setName("SUN")
 
 register("command", () => {
@@ -385,19 +405,35 @@ register("guiOpened", () => {
     });
 });
 
-register("command", () => {    
-    plotdata.farm.forEach(farm => {
-        if (farm.p == getpestplot()) {
-            // ChatLib.chat(`Pest is in: ${farm.match} farm.p:${farm.p}`);
-            ChatLib.command(`tptoplot ${farm.match}`)
-        }
+let tped = false;
 
-    })
+register("command", () => {
+    let didTp = false
+
+    plotdata.farm.forEach(farm => {
+        const target1 = String(getpestplotsec()[0]);
+        const target2 = String(getpestplotsec()[1]);
+
+        if (!didTp && String(farm.p) === target1 && farm.p !== tped) {
+            tped = farm.p;
+            ChatLib.command(`tptoplot ${farm.match}`);
+            // ChatLib.chat(`${tped}`);
+            didTp = true;
+        } else if (!didTp && String(farm.p) === target2 && farm.p !== tped) {
+            tped = farm.p;
+            ChatLib.command(`tptoplot ${farm.match}`);
+            // ChatLib.chat(`${tped}`);
+            didTp = true;
+        }
+    });
 }).setName("pestwhere");
 
 
+register("command", () => {
+    ChatLib.chat(`${getpestplotsec()}`)
+}).setName("aiuep")
 
-
+/*
 // GUI が閉じられたらオフにする
 register("guiClosed", () => {
     opend = false;
@@ -412,3 +448,12 @@ register("guiRender", (mx, my, gui) => {
         });
     }
 });
+*/
+
+register("command", () => {
+    if (data.original === null) {
+        ChatLib.command(`mouselock true`, true)
+    } else {
+        ChatLib.command(`mouselock false`, true)
+    }
+}).setName("$$$$$$")

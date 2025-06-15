@@ -3,13 +3,15 @@ import { registerWhen } from "../../../BloomCore/utils/Utils";
 import config from "../../config";
 import { testprefix, getSkyblockArea, getrep } from "../../index"
 
+let text = new Text(" ", 0, 0)
+
 register("command", () => {
     ChatLib.chat(`${testprefix}: ${getrep()}`)
 }).setName("getrep")
 
 register("renderOverlay", () => {
     if (config.sprayDisplayGui.isOpen()) {
-        text.setString("60m00s");
+        text.setString(" ");
         text.setScale(data.sprayDisplay.scale);
         text.draw(data.sprayDisplay.x, data.sprayDisplay.y);
     }
